@@ -31,7 +31,7 @@ jobs:
             -project ChatApp.xcodeproj \
             -scheme ChatApp \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator' \
+            -destination 'platform=iOS Simulator,name=iPhone 17' \
             build
 
       - name: Run Unit Tests
@@ -41,5 +41,5 @@ jobs:
             -project ChatApp.xcodeproj \
             -scheme ChatApp \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator' \
+            -destination 'platform=iOS Simulator,name=iPhone 17' \
             test
