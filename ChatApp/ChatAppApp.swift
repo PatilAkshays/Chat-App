@@ -1,17 +1,12 @@
-//
-//  ChatAppApp.swift
-//  ChatApp
-//
-//  Created by Akshay Patil on 28/07/26.
-//
-
 import SwiftUI
 
 @main
 struct ChatAppApp: App {
+    private let container = DIContainer(useMocks: true)
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AppRootView(container: container)
         }
     }
 }

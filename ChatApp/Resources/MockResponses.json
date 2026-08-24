@@ -1,0 +1,36 @@
+{
+  "login": {
+    "token": "mock-token",
+    "user": {
+      "id": "current-user",
+      "name": "Akshay Patil",
+      "email": "akshay@example.com",
+      "profileImageURL": null,
+      "isOnline": true
+    }
+  },
+  "conversations": [
+    {
+      "id": "conversation-1",
+      "participants": [
+        {
+          "id": "user-2",
+          "name": "Maya Rao",
+          "email": "maya@example.com",
+          "profileImageURL": null,
+          "isOnline": true
+        }
+      ],
+      "lastMessage": {
+        "id": "message-2",
+        "senderId": "user-2",
+        "receiverId": "current-user",
+        "text": "Can you review the latest build?",
+        "imageURL": null,
+        "createdAt": "2026-07-28T09:15:00Z",
+        "status": "delivered"
+      },
+      "unreadCount": 2
+    }
+  ]
+}
