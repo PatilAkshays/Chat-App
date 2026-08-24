@@ -16,15 +16,33 @@ jobs:
 
     steps:
 
+      # -------------------------
+      # Checkout
+      # -------------------------
       - name: Checkout code
         uses: actions/checkout@v4
 
+
+      # -------------------------
+      # Xcode
+      # -------------------------
       - name: Show Xcode version
-        run: xcodebuild -version
+        run: |
+          xcodebuild -version
 
-      - name: List available simulators
-        run: xcrun simctl list devices available
 
+      # -------------------------
+      # Simulator information
+      # -------------------------
+      - name: Check iOS Simulator
+        run: |
+          xcrun simctl list runtimes
+          xcrun simctl list devices available
+
+
+      # -------------------------
+      # Build
+      # -------------------------
       - name: Build iOS App
         run: |
           xcodebuild \
@@ -34,23 +52,74 @@ jobs:
             -destination 'platform=iOS Simulator,name=iPhone 17' \
             build
 
-      - name: Check iOS Simulator
-        run: |
-          xcodebuild -version
-          xcrun simctl list runtimes
-          xcrun simctl list devices available
-      
+
+      # -------------------------
+      # Boot Simulator
+      # -------------------------
       - name: Boot iPhone 17 Simulator
         run: |
           xcrun simctl boot "iPhone 17" || true
           xcrun simctl bootstatus "iPhone 17" -b
-      
+
+
+      # -------------------------
+      # Unit Tests
+      # -------------------------
       - name: Run Unit Tests
         timeout-minutes: 15
         run: |
           xcodebuild \
             -project ChatApp.xcodeproj \
             -scheme ChatApp \
-            -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.5' \
+            -destination 'platform=iOS Simulator,name=iPhone 17' \
             -only-testing:ChatAppTests \
             test
+
+
+      # -------------------------
+      # Version
+      # -------------------------
+      - name: Show App Version
+        run: |
+          xcrun agvtool what-marketing-version
+          xcrun agvtool what-version
+
+
+      # -------------------------
+      # Set CI Build Number
+      # -------------------------
+      - name: Set Build Number
+        run: |
+          xcrun agvtool newbuild $GITHUB_RUN_NUMBER
+
+
+      # -------------------------
+      # Verify Build Number
+      # -------------------------
+      - name: Verify Build Number
+        run: |
+          xcrun agvtool what-version
+
+
+      # -------------------------
+      # Archive
+      # -------------------------
+      - name: Archive iOS App
+        run: |
+          xcodebuild \
+            -project ChatApp.xcodeproj \
+            -scheme ChatApp \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$PWD/build/ChatApp.xcarchive" \
+            archive
+
+
+      # -------------------------
+      # Upload Archive
+      # -------------------------
+      - name: Upload Archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChatApp-${{ github.run_number }}.xcarchive
+          path: build/ChatApp.xcarchive
