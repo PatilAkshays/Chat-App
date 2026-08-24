@@ -88,17 +88,17 @@ jobs:
       # -------------------------
       # Set CI Build Number
       # -------------------------
-      - name: Set Build Number
-        run: |
-          xcrun agvtool newbuild $GITHUB_RUN_NUMBER
+      # - name: Set Build Number
+      #   run: |
+      #     xcrun agvtool newbuild $GITHUB_RUN_NUMBER
 
 
       # -------------------------
       # Verify Build Number
       # -------------------------
-      - name: Verify Build Number
-        run: |
-          xcrun agvtool what-version
+      # - name: Verify Build Number
+      #   run: |
+      #     xcrun agvtool what-version
 
 
       # -------------------------
@@ -112,6 +112,7 @@ jobs:
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -archivePath "$PWD/build/ChatApp.xcarchive" \
+            CURRENT_PROJECT_VERSION=$GITHUB_RUN_NUMBER \
             archive
 
 
