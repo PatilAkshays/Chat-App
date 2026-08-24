@@ -34,6 +34,11 @@ jobs:
             -destination 'platform=iOS Simulator,name=iPhone 17' \
             build
 
+      - name: Check Simulators
+        run: |
+          xcodebuild -version
+          xcrun simctl list devices available
+
       - name: Run Unit Tests
         timeout-minutes: 15
         run: |
@@ -41,5 +46,5 @@ jobs:
             -project ChatApp.xcodeproj \
             -scheme ChatApp \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 17' \
+            -destination 'platform=iOS Simulator' \
             test
