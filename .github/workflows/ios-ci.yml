@@ -22,6 +22,15 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
+      - name: Run Unit Tests
+        run: |
+          xcodebuild \
+            -project ChatApp.xcodeproj \
+            -scheme ChatApp \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 17' \
+            test
+
       - name: Build iOS App
         run: |
           xcodebuild \
@@ -31,11 +40,4 @@ jobs:
             -destination 'platform=iOS Simulator,name=iPhone 17' \
             build
 
-      - name: Run Unit Tests
-        run: |
-          xcodebuild \
-            -project ChatApp.xcodeproj \
-            -scheme ChatApp \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 17' \
-            test
+  
