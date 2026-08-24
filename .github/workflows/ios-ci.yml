@@ -22,14 +22,8 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
-      - name: Run Unit Tests
-        run: |
-          xcodebuild \
-            -project ChatApp.xcodeproj \
-            -scheme ChatApp \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 17' \
-            test
+      - name: List available simulators
+        run: xcrun simctl list devices available
 
       - name: Build iOS App
         run: |
@@ -37,7 +31,15 @@ jobs:
             -project ChatApp.xcodeproj \
             -scheme ChatApp \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 17' \
+            -destination 'platform=iOS Simulator' \
             build
 
-  
+      - name: Run Unit Tests
+        timeout-minutes: 15
+        run: |
+          xcodebuild \
+            -project ChatApp.xcodeproj \
+            -scheme ChatApp \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator' \
+            test
